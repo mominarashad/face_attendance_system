@@ -1,0 +1,100 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get adminId passed from Flask template
+            const adminId = {{ admin[0] | tojson }}; // Properly escape and inject adminId into JS
+            console.log('Admin ID from Flask:', adminId);
+            
+            if (!adminId) {
+                window.location.href = '/login'; // Redirect if not logged in
+            }
+
+            // Fetch admin data based on admin_id stored in session
+            fetch('/settings', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${adminId}`  // Use adminId in Authorization header
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.admin) {
+                    document.getElementById('first_name').value = data.admin.first_name;
+                    document.getElementById('last_name').value = data.admin.last_name;
+                    document.getElementById('email').value = data.admin.email;
+                    document.getElementById('contact').value = data.admin.contact;
+                } else {
+                    alert('Admin not found!');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching admin data:', error);
+                alert('An error occurred while fetching admin data.');
+            });
+        });
+
+        // Handle form submission to update profile
+        function updateProfile(event) {
+            event.preventDefault();
+
+            const adminId = {{ admin[0] | tojson }};  // Properly escape and inject adminId into JS
+            const formData = new FormData(event.target);
+
+            // Send data to the server to update the profile
+            fetch('/settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${adminId}`
+                },
+                body: JSON.stringify({
+                    first_name: formData.get('first_name'),
+                    last_name: formData.get('last_name'),
+                    email: formData.get('email'),
+                    contact: formData.get('contact'),
+                    password: formData.get('password')
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Profile updated successfully!');
+                    location.reload(); // Refresh to show updated info
+                } else {
+                    alert('An error occurred while updating your profile.');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating profile:', error);
+                alert('An error occurred while updating your profile.');
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>Settings</h2>
+    <form onsubmit="updateProfile(event)">
+        <label for="first_name">First Name</label>
+        <input type="text" id="first_name" name="first_name" required>
+
+        <label for="last_name">Last Name</label>
+        <input type="text" id="last_name" name="last_name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="contact">Contact</label>
+        <input type="text" id="contact" name="contact" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password">
+
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html> -->

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - View Attendance</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            margin: 0;
+            background: linear-gradient(135deg, #6e7dff, #8e44ad);
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            padding-top: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar .header {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #575757;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+            margin: 5px 0;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+            color: #ffffff;
+        }
+
+        .sidebar a i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Main content styles */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #343a40;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="header"><a href="/admin_dashboard">Admin Dashboard</a></div>
+        <br>
+        <a href="/admin/students"><i class="fas fa-users"></i> View Students</a>
+        <br>
+        <a href="/register"><i class="fas fa-user-plus"></i> Register Students</a>
+        <br>
+        <a href="/attendance_sheet"><i class="fas fa-calendar-check"></i> View Attendance Sheet</a>
+        <br>
+        <a href="#"><i class="fas fa-user-minus"></i> Remove Students</a>
+        <br>
+        <a href="/settings"><i class="fas fa-cogs"></i> Settings</a>
+        <br>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <div class="container">
+            <h2 class="text-center my-4">Attendance Records</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                    
+                        <th>Date & Time</th>
+                        <th>Attendance Count</th>
+                        <th>Username</th>
+                        <th>Registration ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance %}
+                    <tr>
+                        <td>{{ record.date_time }}</td>
+                        <td>{{ record.attendance_count }}</td>
+                        <td>{{ record.username }}</td>
+                        <td>{{ record.registration_id }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center">
+                <a href="{{ url_for('download_attendance') }}" class="btn btn-success">Download Attendance as CSV</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

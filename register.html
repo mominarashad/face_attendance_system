@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #6e7dff, #8e44ad);
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            padding-top: 20px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .header {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #575757;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: white;
+            text-decoration: none;
+            margin: 5px 0;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .registration-form {
+            background-color: #343a40;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 50px auto;
+            color: white;
+        }
+
+        .registration-form h2 {
+            margin-bottom: 20px;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background-color: #6e7dff;
+            border-color: #6e7dff;
+        }
+
+        .btn-primary:hover {
+            background-color: #575757;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="header"><a href="/admin_dashboard">Admin Dashboard</a></div>
+        <br>
+        <a href="/admin/students"><i class="fas fa-users"></i> View Students</a>
+        <br>
+        <a href="/register"><i class="fas fa-user-plus"></i> Register Students</a>
+        <br>
+        <a href="/attendance_sheet"><i class="fas fa-calendar-check"></i> View Attendance Sheet</a>
+        <br>
+        <a href="#"><i class="fas fa-user-minus"></i> Remove Students</a>
+        <br>
+        <a href="/settings"><i class="fas fa-cogs"></i> Settings</a>
+        <br>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="registration-form">
+            <h2>Student Registration</h2>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="/register">
+                <div class="form-group">
+                    <label for="registration_id">Registration ID:</label>
+                    <input type="text" class="form-control" id="registration_id" name="registration_id" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Register Student</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

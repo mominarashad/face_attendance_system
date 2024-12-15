@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        button {
+            padding: 20px 40px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            margin: 20px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #videoElement {
+            width: 640px;
+            height: 480px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mark Attendance</h1>
+        <button id="startButton">Start Camera</button>
+        <button id="captureButton" style="display: none;">Capture Image</button>
+        <video id="videoElement" autoplay></video>
+        <canvas id="canvas" style="display: none;"></canvas>
+        <script>
+            const startButton = document.getElementById('startButton');
+            const captureButton = document.getElementById('captureButton');
+            const videoElement = document.getElementById('videoElement');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+            
+            startButton.addEventListener('click', function() {
+                // Hide start button and show video element and capture button
+                startButton.style.display = 'none';
+                captureButton.style.display = 'block';
+                videoElement.style.display = 'block';
+                startCamera();
+            });
+
+            captureButton.addEventListener('click', function() {
+                // Capture the frame from the video stream
+                captureFrame();
+            });
+
+            function startCamera() {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        videoElement.srcObject = stream;
+                    })
+                    .catch(function(error) {
+                        console.log("Error accessing the camera: ", error);
+                    });
+            }
+
+            function captureFrame() {
+                canvas.width = videoElement.videoWidth;
+                canvas.height = videoElement.videoHeight;
+                context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+                
+                // Convert the canvas to a Blob and send it to the server
+                canvas.toBlob(function(blob) {
+                    const formData = new FormData();
+                    formData.append('image', blob, 'frame.jpg');  // 'image' is the field name
+
+                    fetch('/mark_attendance', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        alert(data.success || data.error);
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            }
+        </script>
+    </div>
+</body>
+</html>
